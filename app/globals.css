@@ -1,26 +1,42 @@
+/* 1. La nueva forma de importar Tailwind v4 (reemplaza a los 3 @tailwind) */
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --mc-green: #528044;
+  --mc-dirt: #866043;
+  --mc-stone: #7a7a7a;
+  --mc-border: #1e1e1e;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #313131;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* 2. Reemplazamos @apply por CSS puro para evitar el error de compilación */
+.mc-button {
+  position: relative;
+  display: inline-block;
+  padding: 0.75rem 1.5rem; /* Equivale a px-6 py-3 */
+  font-size: 1.25rem; /* Equivale a text-xl */
+  font-weight: 700; /* Equivale a font-bold */
+  text-transform: uppercase;
+  transition: all 75ms ease-in-out;
+  background-color: var(--mc-stone);
+  border: 4px solid var(--mc-border);
+  box-shadow: inset -4px -4px 0px 0px #5a5a5a, inset 4px 4px 0px 0px #aeaeae;
+  cursor: pointer;
+}
+
+.mc-button:active {
+  transform: translateY(0.25rem); /* Equivale a translate-y-1 */
+  box-shadow: inset 4px 4px 0px 0px #5a5a5a, inset -4px -4px 0px 0px #aeaeae;
+}
+
+.mc-card {
+  padding: 1.5rem; /* Equivale a p-6 */
+  border: 4px solid black;
+  background-color: #4d4d4d;
+  box-shadow: 8px 8px 0px 0px rgba(0,0,0,0.3);
 }
