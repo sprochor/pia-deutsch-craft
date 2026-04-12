@@ -14,7 +14,7 @@ export default function AdjetivosPage() {
 
   const poolSituaciones = [
     { id: 1, texto: "Un Creeper se tropieza y cae a la lava con sus bloques.", opciones: ["ungeschickt", "mutig"], correcta: "ungeschickt" },
-    { id: 2, texto: "Tu lobo Galleta no teme a los esqueletos y te defiende.", opciones: ["schüchtern", "mutig"], correcta: "mutig" },
+    { id: 2, texto: "Tu lobo Galleta no le tiene miedo a los esqueletos y te defiende.", opciones: ["schüchtern", "mutig"], correcta: "mutig" },
     { id: 3, texto: "Un aldeano te regala esmeraldas y comida gratis.", opciones: ["großzügig", "faul"], correcta: "großzügig" },
     { id: 4, texto: "Alex siempre te ayuda a terminar tu casa de madera.", opciones: ["hilfsbereit", "witzig"], correcta: "hilfsbereit" },
     { id: 5, texto: "Steve habla muchísimo por el chat del servidor.", opciones: ["ruhig", "gesprächig"], correcta: "gesprächig" },
