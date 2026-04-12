@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function useProgress() {
   // 1. Todos los estados van arriba
@@ -8,7 +8,7 @@ export function useProgress() {
 
   // 2. Un solo useEffect para cargar todo al inicio
   useEffect(() => {
-    const saved = localStorage.getItem('piacraft_progress');
+    const saved = localStorage.getItem("piacraft_progress");
     if (saved) {
       const { gems, missions, owned } = JSON.parse(saved);
       setGems(gems || 0);
@@ -34,13 +34,16 @@ export function useProgress() {
     setCompletedMissions(newMissions);
 
     // Guardamos incluyendo los items que ya compró para no perderlos
-    localStorage.setItem('piacraft_progress', JSON.stringify({
-      gems: newGems,
-      missions: newMissions,
-      owned: ownedItems 
-    }));
+    localStorage.setItem(
+      "piacraft_progress",
+      JSON.stringify({
+        gems: newGems,
+        missions: newMissions,
+        owned: ownedItems,
+      }),
+    );
 
-    return finalPoints; 
+    return finalPoints;
   };
 
   // 4. Función para gastar gemas en la Tienda
@@ -48,15 +51,18 @@ export function useProgress() {
     if (gems >= price) {
       const newGems = gems - price;
       const newOwned = { ...ownedItems, [itemId]: true };
-      
+
       setGems(newGems);
       setOwnedItems(newOwned);
-      
-      localStorage.setItem('piacraft_progress', JSON.stringify({
-        gems: newGems,
-        missions: completedMissions,
-        owned: newOwned
-      }));
+
+      localStorage.setItem(
+        "piacraft_progress",
+        JSON.stringify({
+          gems: newGems,
+          missions: completedMissions,
+          owned: newOwned,
+        }),
+      );
       return true; // Compra exitosa
     }
     return false; // No le alcanzan las gemas

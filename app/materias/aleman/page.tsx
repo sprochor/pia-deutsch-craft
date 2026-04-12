@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useProgress } from "@/hooks/useProgress";
 
 export default function AlemanHubPage() {
-  // Inicializamos nuestro hook de progreso
   const { gems, completedMissions } = useProgress();
 
   const misiones = [
@@ -12,7 +11,7 @@ export default function AlemanHubPage() {
       titulo: "Misión 1: Posesivos",
       desc: "Sein vs Ihr (El Inventario)",
       icono: "⚔️",
-      ruta: "/materias/aleman/posesivos", // Asumiendo que moviste el Nivel 1 a esta ruta
+      ruta: "/materias/aleman/posesivos",
     },
     {
       id: "adjetivos",
@@ -26,18 +25,15 @@ export default function AlemanHubPage() {
       titulo: "Misión 3: Crafteo",
       desc: "Armar oraciones (Mesa de Crafteo)",
       icono: "🧱",
-      ruta: "/materias/aleman/oraciones", // Para cuando armemos este nivel
+      ruta: "/materias/aleman/oraciones",
     },
   ];
 
   return (
     <main className="min-h-screen p-6 max-w-2xl mx-auto relative">
-      {/* HUD: Contador de Gemas en la esquina superior derecha */}
       <div className="absolute top-4 right-4 z-50">
         <div className="mc-card !bg-[#313131] !p-2 !border-2 flex items-center gap-2 border-yellow-500 shadow-lg">
-          <span className="text-2xl drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
-            💎
-          </span>
+          <span className="text-2xl drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">💎</span>
           <span className="text-xl font-black text-yellow-400 drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
             {gems}
           </span>
@@ -51,14 +47,14 @@ export default function AlemanHubPage() {
       </Link>
 
       <div className="mc-card mb-12 border-[#528044] text-center bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-        <h1 className="text-4xl font-black text-[#528044] mb-2 drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] tracking-widest">
-          BIOMA ALEMÁN
+        <h1 className="text-4xl font-black text-[#528044] mb-2 drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] tracking-widest uppercase">
+          Bioma Alemán
         </h1>
         <p className="text-gray-300 font-bold bg-black/50 inline-block px-4 py-1">
           Examen: Viernes 17/04
         </p>
       </div>
-      {/* Botón para ir a la Tienda */}
+
       <div className="mb-8 text-center">
         <Link href="/materias/aleman/tienda">
           <button className="mc-button !bg-[#866043] hover:!bg-[#9e714f] text-white w-full py-4 text-2xl font-black shadow-lg animate-pulse border-yellow-500">
@@ -66,10 +62,16 @@ export default function AlemanHubPage() {
           </button>
         </Link>
       </div>
+
       <div className="space-y-6">
         {misiones.map((m) => {
-          // Verificamos si la misión ya fue completada antes (para cambiarle el estilo)
-          const vecesCompletada = completedMissions[`aleman_${m.id}`] || 0;
+          // 1. Definimos el tipo para que TS no se queje
+          const misionesGuardadas = completedMissions as Record<string, number>;
+          
+          // 2. Buscamos cuántas veces se completó
+          const vecesCompletada = misionesGuardadas[`aleman_${m.id}`] || 0;
+          
+          // 3. DECLARAMOS la variable que faltaba
           const yaCompletada = vecesCompletada > 0;
 
           return (
@@ -83,13 +85,17 @@ export default function AlemanHubPage() {
               >
                 <div className="flex items-center gap-4">
                   <span
-                    className={`text-4xl bg-[#313131] p-3 border-4 ${yaCompletada ? "border-yellow-500" : "border-black"}`}
+                    className={`text-4xl bg-[#313131] p-3 border-4 ${
+                        yaCompletada ? "border-yellow-500" : "border-black"
+                    }`}
                   >
                     {m.icono}
                   </span>
                   <div>
                     <h3
-                      className={`font-black text-2xl tracking-wide ${yaCompletada ? "text-yellow-400" : "text-white"}`}
+                      className={`font-black text-2xl tracking-wide ${
+                        yaCompletada ? "text-yellow-400" : "text-white"
+                      }`}
                     >
                       {m.titulo}
                     </h3>
@@ -103,7 +109,7 @@ export default function AlemanHubPage() {
                   </div>
                 </div>
 
-                <div className="text-3xl bg-[#528044] p-2 border-2 border-black drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                <div className="text-3xl bg-[#528044] p-2 border-2 border-black drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] text-white">
                   ▶
                 </div>
               </div>
