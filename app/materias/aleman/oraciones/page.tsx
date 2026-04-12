@@ -43,8 +43,8 @@ export default function OracionesPage() {
     },
     { 
       id: 5, 
-      desordenadas: ["con Galleta.", "spielt", "Er", "gerne"], 
-      correcta: "Er spielt gerne con Galleta.",
+      desordenadas: ["mit Galleta.", "spielt", "Er", "gerne"], 
+      correcta: "Er spielt gerne mit Galleta.",
       explicacion: "Sujeto + Verbo + Adverbio. El verbo 'spielt' se queda en su lugar favorito: la segunda posición."
     },
     { 
