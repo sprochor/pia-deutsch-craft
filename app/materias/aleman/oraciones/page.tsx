@@ -154,22 +154,33 @@ export default function OracionesPage() {
 
       {/* Feedback y Explicación */}
       {mostrarResultado && (
-        <div className={`mc-card mb-8 animate-bounce border-4 ${esCorrecto ? 'border-green-500 bg-green-900/30' : 'border-red-500 bg-red-900/30'}`}>
-          <p className="text-xl font-black mb-2">
-            {esCorrecto ? "¡CRAFTEO EXITOSO! 💎" : "¡ERROR DE CRAFTEO! 🧨"}
-          </p>
+        <div className={`mc-card mb-8 transition-all border-4 ${esCorrecto ? 'border-green-500 bg-green-900/30' : 'border-red-500 bg-red-900/30'}`}>
+          <div className="text-xl font-black mb-2 flex items-center justify-center gap-2">
+            {esCorrecto ? (
+              <>
+                <span className="animate-bounce">💎</span> 
+                <span>¡CRAFTEO EXITOSO!</span> 
+                <span className="animate-bounce">💎</span>
+              </>
+            ) : (
+              "¡ERROR DE CRAFTEO! 🧨"
+            )}
+          </div>
+          
           {!esCorrecto && (
-            <div className="text-left bg-black/40 p-3 rounded border border-red-400">
+            <div className="text-left bg-black/40 p-4 rounded border border-red-400 mt-4">
               <p className="text-red-300 text-sm mb-2 font-bold">Respuesta correcta:</p>
-              <p className="text-white mb-3">{misionActual.correcta}</p>
-              <hr className="border-red-500/30 mb-2" />
-              <p className="text-red-200 text-xs italic">
-                <span className="font-black text-red-400">💡 TIP DE CRAFTEO:</span> {misionActual.explicacion}
+              <p className="text-white text-lg mb-3">{misionActual.correcta}</p>
+              <hr className="border-red-500/30 mb-3" />
+              <p className="text-red-100 text-sm leading-relaxed">
+                <span className="font-black text-red-400 text-base">💡 TIP DE CRAFTEO:</span> <br/>
+                {misionActual.explicacion}
               </p>
             </div>
           )}
+          
           {esCorrecto && gananciaActual > 0 && (
-            <p className="text-yellow-400 font-bold text-lg">Ganaste {gananciaActual} gemas</p>
+            <p className="text-yellow-400 font-bold text-lg mt-2">Ganaste {gananciaActual} gemas</p>
           )}
         </div>
       )}
