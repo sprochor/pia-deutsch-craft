@@ -12,15 +12,16 @@ export default function PosesivosPage() {
   const [mostrarResultado, setMostrarResultado] = useState(false);
   const [gananciaActual, setGananciaActual] = useState(0);
 
+  // Banco de datos con explicaciones y correcciones gramaticales
   const poolPreguntas = [
-    { id: 1, texto: "Das ist Steve. _____ Schwert ist aus Diamant.", opciones: ["Sein", "Ihr"], correcta: "Sein" },
-    { id: 2, texto: "Das ist Alex. _____ Augen sind grün.", opciones: ["Seine", "Ihre"], correcta: "Ihre" },
-    { id: 3, texto: "Steve hat einen Hund. _____ Hund heißt Galleta.", opciones: ["Sein", "Ihr"], correcta: "Sein" },
-    { id: 4, texto: "Alex baut ein Haus. _____ Haus ist aus Stein.", opciones: ["Sein", "Ihr"], correcta: "Ihr" },
-    { id: 5, texto: "Das ist Steve. _____ Haare sind braun.", opciones: ["Seine", "Ihre"], correcta: "Seine" },
-    { id: 6, texto: "Mia hat eine Freundin. _____ Freundin heißt Maja.", opciones: ["Sein", "Ihr"], correcta: "Ihr" },
-    { id: 7, texto: "Mia hat einen Freund. _____ Freund hat blonde Haare.", opciones: ["Sein", "Ihr"], correcta: "Sein" },
-    { id: 8, texto: "Das ist Alex. _____ Lieblingssport ist Schwimmen.", opciones: ["Sein", "Ihr"], correcta: "Ihr" }
+    { id: 1, texto: "Das ist Steve. _____ Schwert ist aus Diamant.", opciones: ["Sein", "Ihr"], correcta: "Sein", explicacion: "El dueño de la espada es Steve (un varón), por eso usamos 'Sein'." },
+    { id: 2, texto: "Das ist Alex. _____ Augen sind grün.", opciones: ["Seine", "Ihre"], correcta: "Ihre", explicacion: "Alex es nena (Ihr) y 'ojos' (Augen) es plural, por eso agregamos la -e: 'Ihre'." },
+    { id: 3, texto: "Steve hat einen Hund. _____ Hund heißt Galleta.", opciones: ["Sein", "Ihr"], correcta: "Sein", explicacion: "El dueño de Galleta es Steve (varón), así que usamos 'Sein'." },
+    { id: 4, texto: "Alex baut ein Haus. _____ Haus ist aus Stein.", opciones: ["Sein", "Ihr"], correcta: "Ihr", explicacion: "Como la dueña de la casa es Alex (nena), usamos 'Ihr'." },
+    { id: 5, texto: "Das ist Steve. _____ Haare sind braun.", opciones: ["Seine", "Ihre"], correcta: "Seine", explicacion: "Steve es varón (Sein) y el pelo (Haare) es plural, por eso lleva la -e: 'Seine'." },
+    { id: 6, texto: "Mia hat eine Freundin. _____ Freundin heißt Maja.", opciones: ["Seine", "Ihre"], correcta: "Ihre", explicacion: "Mia es nena (Ihr) y su amiga (Freundin) es femenino, por eso agregamos la -e: 'Ihre'." },
+    { id: 7, texto: "Mia hat einen Freund. _____ Freund hat blonde Haare.", opciones: ["Sein", "Ihr"], correcta: "Ihr", explicacion: "Hablamos del amigo de Mia. Como Mia es nena, el posesivo es 'Ihr' (no importa que el amigo sea varón)." },
+    { id: 8, texto: "Das ist Alex. _____ Lieblingssport ist Schwimmen.", opciones: ["Sein", "Ihr"], correcta: "Ihr", explicacion: "Hablamos del deporte de Alex (nena), así que usamos 'Ihr'." }
   ];
 
   useEffect(() => {
@@ -28,7 +29,6 @@ export default function PosesivosPage() {
     setPreguntas(shuffled.slice(0, 5));
   }, []);
 
-  // ¡Corrección de TypeScript aplicada aquí!
   const seleccionarOpcion = (id: number, opcion: string) => {
     if (!mostrarResultado) {
       playClick();
@@ -48,7 +48,6 @@ export default function PosesivosPage() {
     setMostrarResultado(true);
   };
 
-  // ¡El diseño visual completo restaurado aquí!
   return (
     <main className="min-h-screen p-8 max-w-4xl mx-auto relative text-white bg-[#1e1e1e]">
       <div className="absolute top-4 right-4 z-50">
@@ -79,8 +78,8 @@ export default function PosesivosPage() {
           return (
             <div key={q.id} className="mc-card bg-[#3a3a3a] border-gray-600 p-4 flex flex-col justify-between">
               <p className="text-lg mb-4 text-gray-200 font-bold">{q.texto}</p>
+              
               <div className="flex gap-2">
-                {/* ¡Corrección de TypeScript aplicada en el .map! */}
                 {q.opciones.map((opcion: string) => (
                   <button
                     key={opcion}
@@ -98,6 +97,14 @@ export default function PosesivosPage() {
                   </button>
                 ))}
               </div>
+
+              {/* Lógica de la explicación: Solo aparece si comprobó y se equivocó en ESTA pregunta */}
+              {mostrarResultado && respondido && !esCorrecta && (
+                <div className="mt-4 p-3 bg-red-900/40 border-2 border-red-500 rounded text-sm text-red-100 animate-pulse">
+                  <span className="font-black text-red-400 block mb-1">💡 TIP DE CRAFTEO:</span> 
+                  {q.explicacion}
+                </div>
+              )}
             </div>
           );
         })}
