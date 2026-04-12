@@ -3,16 +3,17 @@ import { useEffect } from "react";
 import { useProgress } from "@/hooks/useProgress";
 
 export default function ThemeWrapper({ children }: { children: React.ReactNode }) {
-  const { ownedItems } = useProgress();
+  const { activeTheme } = useProgress();
 
   useEffect(() => {
-    // Si tiene la skin comprada, le agregamos la clase al body
-    if (ownedItems?.skin_pink) {
+    // Limpiamos temas anteriores
+    document.body.classList.remove("theme-pink");
+    
+    // Aplicamos el tema activo
+    if (activeTheme === "skin_pink") {
       document.body.classList.add("theme-pink");
-    } else {
-      document.body.classList.remove("theme-pink");
     }
-  }, [ownedItems]);
+  }, [activeTheme]);
 
   return <>{children}</>;
 }

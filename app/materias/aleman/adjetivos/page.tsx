@@ -12,67 +12,77 @@ export default function AdjetivosPage() {
   const [mostrarResultado, setMostrarResultado] = useState(false);
   const [gananciaActual, setGananciaActual] = useState(0);
 
+  // Pool de situaciones con explicaciones agregadas
   const poolSituaciones = [
     {
       id: 1,
       texto: "Un Creeper se tropieza y cae a la lava con sus bloques.",
       opciones: ["ungeschickt", "mutig"],
       correcta: "ungeschickt",
+      explicacion: "'Ungeschickt' significa torpe. ¡Un Creeper que se cae a la lava definitivamente es muy torpe!"
     },
     {
       id: 2,
-      texto:
-        "Tu lobo Galleta no le tiene miedo a los esqueletos y te defiende.",
+      texto: "Tu lobo Galleta no le tiene miedo a los esqueletos y te defiende.",
       opciones: ["schüchtern", "mutig"],
       correcta: "mutig",
+      explicacion: "'Mutig' significa valiente. 'Schüchtern' es tímido. Galleta es súper valiente por enfrentarse a los esqueletos."
     },
     {
       id: 3,
       texto: "Un aldeano te regala esmeraldas y comida gratis.",
       opciones: ["großzügig", "faul"],
       correcta: "großzügig",
+      explicacion: "'Großzügig' es generoso. Si te regala cosas en lugar de cobrártelas, ¡es un gran aldeano!"
     },
     {
       id: 4,
       texto: "Alex siempre te ayuda a terminar tu casa de madera.",
       opciones: ["hilfsbereit", "witzig"],
       correcta: "hilfsbereit",
+      explicacion: "'Hilfsbereit' viene de 'Hilfe' (ayuda). Alguien que te ayuda a construir es muy servicial y solidario."
     },
     {
       id: 5,
       texto: "Steve habla muchísimo por el chat del servidor.",
       opciones: ["ruhig", "gesprächig"],
       correcta: "gesprächig",
+      explicacion: "'Gesprächig' significa hablador o conversador. 'Ruhig' sería alguien muy tranquilo y callado."
     },
     {
       id: 6,
       texto: "Un Enderman te mira muy serio y no hace chistes.",
       opciones: ["witzig", "ernst"],
       correcta: "ernst",
+      explicacion: "'Ernst' significa serio. Los Enderman definitivamente no son conocidos por ser graciosos ('witzig')."
     },
     {
       id: 7,
       texto: "Pia siempre hace sus tareas de alemán con ganas.",
       opciones: ["fleißig", "faul"],
       correcta: "fleißig",
+      explicacion: "'Fleißig' significa aplicado o trabajador. ¡Exactamente como tú estudiando para este examen!"
     },
     {
       id: 8,
       texto: "Un zombie es muy lento y solo quiere dormir.",
       opciones: ["sportlich", "faul"],
       correcta: "faul",
+      explicacion: "'Faul' significa perezoso o vago. Un zombie que no quiere hacer nada es muy 'faul'."
     },
     {
       id: 9,
       texto: "Corres muy rápido por todos los biomas.",
       opciones: ["sportlich", "schüchtern"],
       correcta: "sportlich",
+      explicacion: "'Sportlich' significa deportivo o atlético. ¡Correr por los biomas requiere mucha energía!"
     },
     {
       id: 10,
       texto: "Escuchas con atención los problemas de un amigo.",
       opciones: ["verständnisvoll", "ungeschickt"],
       correcta: "verständnisvoll",
+      explicacion: "'Verständnisvoll' significa comprensivo. Es cuando entiendes y escuchas bien a los demás."
     },
   ];
 
@@ -162,6 +172,14 @@ export default function AdjetivosPage() {
                   </button>
                 ))}
               </div>
+
+              {/* Lógica de la explicación: Sin animaciones molestas para una lectura clara */}
+              {mostrarResultado && respondido && !esCorrecta && (
+                <div className="mt-4 p-3 bg-red-900/40 border-2 border-red-500 rounded text-sm text-red-100">
+                  <span className="font-black text-red-400 block mb-1">💡 TIP DE FORJA:</span> 
+                  {s.explicacion}
+                </div>
+              )}
             </div>
           );
         })}

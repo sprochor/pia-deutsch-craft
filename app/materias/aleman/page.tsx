@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useProgress } from "@/hooks/useProgress";
 
 export default function AlemanHubPage() {
-  const { gems, completedMissions } = useProgress();
+  // 👇 Traemos activeTheme, toggleTheme y ownedItems desde el hook
+  const { gems, completedMissions, activeTheme, toggleTheme, ownedItems } = useProgress();
 
   const misiones = [
     { id: "posesivos", titulo: "Misión 1: Posesivos", desc: "Sein vs Ihr (El Inventario)", icono: "⚔️", ruta: "/materias/aleman/posesivos" },
@@ -44,6 +45,29 @@ export default function AlemanHubPage() {
           </button>
         </Link>
       </div>
+
+      {/* 👇 EL VESTIDOR DE SKINS: Solo aparece si Pia compró la skin */}
+      {ownedItems?.skin_pink && (
+        <div className="mc-card mb-8 border-[#ff69b4] bg-[#ffb6c1]/10 p-4">
+          <p className="text-center text-xs font-bold uppercase mb-3 tracking-widest text-[#ff69b4]">
+            👗 VESTIDOR DE SKINS
+          </p>
+          <div className="flex gap-4">
+            <button 
+              onClick={() => toggleTheme("minecraft")}
+              className={`mc-button flex-1 !py-2 !text-xs text-white transition-all ${activeTheme === "minecraft" ? "!bg-[#528044] border-white scale-105" : "!bg-[#3a3a3a] opacity-70 hover:opacity-100"}`}
+            >
+              🟩 CLASSIC
+            </button>
+            <button 
+              onClick={() => toggleTheme("skin_pink")}
+              className={`mc-button flex-1 !py-2 !text-xs text-white transition-all ${activeTheme === "skin_pink" ? "!bg-[#ff69b4] border-white scale-105" : "!bg-[#3a3a3a] opacity-70 hover:opacity-100"}`}
+            >
+              🌸 MY MELODY
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="space-y-6">
         {misiones.map((m) => {

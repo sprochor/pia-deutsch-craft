@@ -1,36 +1,43 @@
 "use client";
-
 import { useState, useEffect } from "react";
 
-// Definimos la estructura para que TypeScript sepa qué hay en el cofre
 interface ProgressData {
   gems: number;
   missions: Record<string, number>;
   owned: Record<string, boolean>;
+  activeTheme: string; // <-- Nueva variable para el tema actual
 }
 
 export function useProgress() {
   const [gems, setGems] = useState<number>(0);
   const [completedMissions, setCompletedMissions] = useState<Record<string, number>>({});
   const [ownedItems, setOwnedItems] = useState<Record<string, boolean>>({});
+  const [activeTheme, setActiveTheme] = useState<string>("minecraft"); // Default
 
-  // Cargar desde el inventario del navegador (localStorage)
   useEffect(() => {
     const saved = localStorage.getItem("piacraft_progress");
     if (saved) {
-      try {
-        const parsed: ProgressData = JSON.parse(saved);
-        setGems(parsed.gems || 0);
-        setCompletedMissions(parsed.missions || {});
-        setOwnedItems(parsed.owned || {});
-      } catch (e) {
-        console.error("Error al cargar progreso", e);
-      }
+      const parsed: ProgressData = JSON.parse(saved);
+      setGems(parsed.gems || 0);
+      setCompletedMissions(parsed.missions || {});
+      setOwnedItems(parsed.owned || {});
+      setActiveTheme(parsed.activeTheme || "minecraft");
     }
   }, []);
 
+  // Función para cambiar el estilo visual
+  const toggleTheme = (themeName: string) => {
+    setActiveTheme(themeName);
+    const currentProgress = {
+      gems,
+      missions: completedMissions,
+      owned: ownedItems,
+      activeTheme: themeName
+    };
+    localStorage.setItem("piacraft_progress", JSON.stringify(currentProgress));
+  };
+
   const addGems = (missionId: string, points: number) => {
-    let finalPoints = points;
     const newMissions = { ...completedMissions };
 
     if (newMissions[missionId]) {
@@ -56,26 +63,25 @@ export function useProgress() {
     return finalPoints;
   };
 
+  };
+
   const buyItem = (itemId: string, price: number) => {
     if (gems >= price) {
       const newGems = gems - price;
       const newOwned = { ...ownedItems, [itemId]: true };
-
       setGems(newGems);
       setOwnedItems(newOwned);
-
-      localStorage.setItem(
-        "piacraft_progress",
-        JSON.stringify({
-          gems: newGems,
-          missions: completedMissions,
-          owned: newOwned,
-        }),
-      );
+      
+      localStorage.setItem("piacraft_progress", JSON.stringify({
+        gems: newGems,
+        missions: completedMissions,
+        owned: newOwned,
+        activeTheme
+      }));
       return true;
     }
     return false;
   };
 
-  return { gems, completedMissions, ownedItems, addGems, buyItem };
+  return { gems, completedMissions, ownedItems, activeTheme, addGems, buyItem, toggleTheme };
 }
