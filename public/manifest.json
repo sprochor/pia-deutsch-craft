@@ -1,0 +1,17 @@
+{
+  "name": "Piacraft Academy",
+  "short_name": "Piacraft",
+  "description": "Entrenamiento de Alemán para el examen",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#313131",
+  "theme_color": "#528044",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
