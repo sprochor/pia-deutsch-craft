@@ -5,7 +5,7 @@ interface ProgressData {
   gems: number;
   missions: Record<string, number>;
   owned: Record<string, boolean>;
-  activeTheme: string; // <-- Nueva variable para el tema actual
+  activeTheme: string;
 }
 
 export function useProgress() {
@@ -17,27 +17,31 @@ export function useProgress() {
   useEffect(() => {
     const saved = localStorage.getItem("piacraft_progress");
     if (saved) {
-      const parsed: ProgressData = JSON.parse(saved);
-      setGems(parsed.gems || 0);
-      setCompletedMissions(parsed.missions || {});
-      setOwnedItems(parsed.owned || {});
-      setActiveTheme(parsed.activeTheme || "minecraft");
+      try {
+        const parsed: ProgressData = JSON.parse(saved);
+        setGems(parsed.gems || 0);
+        setCompletedMissions(parsed.missions || {});
+        setOwnedItems(parsed.owned || {});
+        setActiveTheme(parsed.activeTheme || "minecraft");
+      } catch (e) {
+        console.error("Error al cargar progreso:", e);
+      }
     }
   }, []);
 
   // Función para cambiar el estilo visual
   const toggleTheme = (themeName: string) => {
     setActiveTheme(themeName);
-    const currentProgress = {
+    localStorage.setItem("piacraft_progress", JSON.stringify({
       gems,
       missions: completedMissions,
       owned: ownedItems,
       activeTheme: themeName
-    };
-    localStorage.setItem("piacraft_progress", JSON.stringify(currentProgress));
+    }));
   };
 
   const addGems = (missionId: string, points: number) => {
+    let finalPoints = points; // Solucionado: Ahora finalPoints existe
     const newMissions = { ...completedMissions };
 
     if (newMissions[missionId]) {
@@ -51,24 +55,25 @@ export function useProgress() {
     setGems(newGems);
     setCompletedMissions(newMissions);
 
+    // Solucionado: Ahora guardamos el activeTheme para no perder la skin
     localStorage.setItem(
       "piacraft_progress",
       JSON.stringify({
         gems: newGems,
         missions: newMissions,
         owned: ownedItems,
-      }),
+        activeTheme 
+      })
     );
 
     return finalPoints;
-  };
-
   };
 
   const buyItem = (itemId: string, price: number) => {
     if (gems >= price) {
       const newGems = gems - price;
       const newOwned = { ...ownedItems, [itemId]: true };
+      
       setGems(newGems);
       setOwnedItems(newOwned);
       
