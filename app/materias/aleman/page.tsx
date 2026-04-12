@@ -1,66 +1,83 @@
-import { useState, useEffect } from 'react';
+"use client";
 
-// Definimos qué forma tiene nuestro progreso
-interface Progress {
-  gems: number;
-  missions: Record<string, number>;
-  owned: Record<string, boolean>;
-}
+import Link from "next/link";
+import { useProgress } from "@/hooks/useProgress";
 
-export function useProgress() {
-  const [gems, setGems] = useState<number>(0);
-  const [completedMissions, setCompletedMissions] = useState<Record<string, number>>({});
-  const [ownedItems, setOwnedItems] = useState<Record<string, boolean>>({});
+export default function AlemanHubPage() {
+  const { gems, completedMissions } = useProgress();
 
-  useEffect(() => {
-    const saved = localStorage.getItem('piacraft_progress');
-    if (saved) {
-      const parsed: Progress = JSON.parse(saved);
-      setGems(parsed.gems || 0);
-      setCompletedMissions(parsed.missions || {});
-      setOwnedItems(parsed.owned || {});
-    }
-  }, []);
+  const misiones = [
+    { id: "posesivos", titulo: "Misión 1: Posesivos", desc: "Sein vs Ihr (El Inventario)", icono: "⚔️", ruta: "/materias/aleman/posesivos" },
+    { id: "adjetivos", titulo: "Misión 2: Adjetivos", desc: "Rasgos de carácter (El Yunque)", icono: "🎭", ruta: "/materias/aleman/adjetivos" },
+    { id: "oraciones", titulo: "Misión 3: Crafteo", desc: "Armar oraciones (Mesa de Crafteo)", icono: "🧱", ruta: "/materias/aleman/oraciones" },
+  ];
 
-  const addGems = (missionId: string, points: number) => {
-    let finalPoints = points;
-    const newMissions = { ...completedMissions };
+  return (
+    <main className="min-h-screen p-6 max-w-2xl mx-auto relative text-white bg-[#1e1e1e]">
+      {/* HUD de Gemas */}
+      <div className="absolute top-4 right-4 z-50">
+        <div className="mc-card !bg-[#313131] !p-2 !border-2 border-yellow-500 flex items-center gap-2 shadow-lg">
+          <span className="text-2xl drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">💎</span>
+          <span className="text-xl font-black text-yellow-400 drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">{gems}</span>
+        </div>
+      </div>
 
-    if (newMissions[missionId]) {
-      finalPoints = Math.floor(points / 2);
-      newMissions[missionId] += 1;
-    } else {
-      newMissions[missionId] = 1;
-    }
+      <Link href="/">
+        <button className="mc-button !bg-[#7a7a7a] text-white mb-8 text-sm px-4 py-2 mt-4">
+          ⬅ Volver al Mapa Principal
+        </button>
+      </Link>
 
-    const newGems = gems + finalPoints;
-    setGems(newGems);
-    setCompletedMissions(newMissions);
+      <div className="mc-card mb-8 border-[#528044] text-center bg-[#2d2d2d]">
+        <h1 className="text-4xl font-black text-[#528044] mb-2 uppercase tracking-widest drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+          BIOMA ALEMÁN
+        </h1>
+        <p className="text-gray-300 font-bold bg-black/50 inline-block px-4 py-1">
+          Examen: Viernes 17/04
+        </p>
+      </div>
 
-    localStorage.setItem('piacraft_progress', JSON.stringify({
-      gems: newGems,
-      missions: newMissions,
-      owned: ownedItems 
-    }));
+      <div className="mb-8 text-center">
+        <Link href="/materias/aleman/tienda">
+          <button className="mc-button !bg-[#866043] hover:!bg-[#9e714f] text-white w-full py-4 text-2xl font-black shadow-lg animate-pulse border-yellow-500">
+            🏪 VISITAR LA TIENDA DEL ALDEANO
+          </button>
+        </Link>
+      </div>
 
-    return finalPoints; 
-  };
+      <div className="space-y-6">
+        {misiones.map((m) => {
+          const misionesGuardadas = completedMissions as Record<string, number>;
+          const vecesCompletada = misionesGuardadas[`aleman_${m.id}`] || 0;
+          const yaCompletada = vecesCompletada > 0;
 
-  const buyItem = (itemId: string, price: number) => {
-    if (gems >= price) {
-      const newGems = gems - price;
-      const newOwned = { ...ownedItems, [itemId]: true };
-      setGems(newGems);
-      setOwnedItems(newOwned);
-      localStorage.setItem('piacraft_progress', JSON.stringify({
-        gems: newGems,
-        missions: completedMissions,
-        owned: newOwned
-      }));
-      return true;
-    }
-    return false;
-  };
-
-  return { gems, completedMissions, ownedItems, addGems, buyItem };
+          return (
+            <Link key={m.id} href={m.ruta} className="block">
+              <div className={`mc-card flex items-center justify-between transition-transform hover:-translate-y-1 active:translate-y-0 cursor-pointer ${
+                  yaCompletada ? "border-yellow-500 bg-[#3a3a3a]" : "border-gray-600 bg-[#2a2a2a]"
+              }`}>
+                <div className="flex items-center gap-4">
+                  <span className={`text-4xl p-3 border-4 ${yaCompletada ? "border-yellow-500" : "border-black"}`}>
+                    {m.icono}
+                  </span>
+                  <div>
+                    <h3 className={`font-black text-2xl ${yaCompletada ? "text-yellow-400" : "text-white"}`}>
+                      {m.titulo}
+                    </h3>
+                    <p className="text-gray-300 text-sm">{m.desc}</p>
+                    {yaCompletada && (
+                      <span className="text-xs text-yellow-500 font-bold mt-1 block">
+                        ⭐ Completada {vecesCompletada} {vecesCompletada === 1 ? "vez" : "veces"}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="text-3xl bg-[#528044] p-2 border-2 border-black drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">▶</div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </main>
+  );
 }
