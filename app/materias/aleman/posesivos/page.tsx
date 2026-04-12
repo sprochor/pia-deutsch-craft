@@ -12,7 +12,6 @@ export default function PosesivosPage() {
   const [mostrarResultado, setMostrarResultado] = useState(false);
   const [gananciaActual, setGananciaActual] = useState(0);
 
-  // Banco de datos expandido
   const poolPreguntas = [
     { id: 1, texto: "Das ist Steve. _____ Schwert ist aus Diamant.", opciones: ["Sein", "Ihr"], correcta: "Sein" },
     { id: 2, texto: "Das ist Alex. _____ Augen sind grün.", opciones: ["Seine", "Ihre"], correcta: "Ihre" },
@@ -25,12 +24,12 @@ export default function PosesivosPage() {
   ];
 
   useEffect(() => {
-    // Mezclar y elegir 5 al azar al entrar
     const shuffled = [...poolPreguntas].sort(() => 0.5 - Math.random());
     setPreguntas(shuffled.slice(0, 5));
   }, []);
 
-  const seleccionarOpcion = (id, opcion) => {
+  // ¡Corrección de TypeScript aplicada aquí!
+  const seleccionarOpcion = (id: number, opcion: string) => {
     if (!mostrarResultado) {
       playClick();
       setRespuestas({ ...respuestas, [id]: opcion });
@@ -49,10 +48,89 @@ export default function PosesivosPage() {
     setMostrarResultado(true);
   };
 
-  // ... (El resto del JSX es igual al anterior, solo asegúrate de que use las variables nuevas)
+  // ¡El diseño visual completo restaurado aquí!
   return (
-    // Usa el mismo JSX que te pasé antes para Posesivos
-    // agregando {gananciaActual > 0 && ...} para el mensaje de éxito
-    <div className="p-8">/* Implementación del JSX anterior con playClick/playSuccess */</div>
+    <main className="min-h-screen p-8 max-w-4xl mx-auto relative text-white bg-[#1e1e1e]">
+      <div className="absolute top-4 right-4 z-50">
+        <div className="mc-card !bg-[#313131] !p-2 !border-2 flex items-center gap-2 border-yellow-500 shadow-lg">
+          <span className="text-2xl">💎</span>
+          <span className="text-xl font-black text-yellow-400">{gems}</span>
+        </div>
+      </div>
+
+      <Link href="/materias/aleman">
+        <button className="mc-button !bg-[#7a7a7a] text-white mb-8 text-sm px-4 py-2 mt-4" onClick={playClick}>
+          ⬅ Volver al Bioma
+        </button>
+      </Link>
+
+      <div className="mc-card mb-8 border-[#3b82f6] bg-[#2d2d2d]">
+        <h1 className="text-3xl font-black text-[#3b82f6] mb-2 uppercase tracking-wide drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+          Misión 1: El Inventario (Posesivos)
+        </h1>
+        <p className="text-gray-300 font-bold italic">Completa con Sein o Ihr / Seine o Ihre...</p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        {preguntas.map((q) => {
+          const respondido = respuestas[q.id];
+          const esCorrecta = respondido === q.correcta;
+
+          return (
+            <div key={q.id} className="mc-card bg-[#3a3a3a] border-gray-600 p-4 flex flex-col justify-between">
+              <p className="text-lg mb-4 text-gray-200 font-bold">{q.texto}</p>
+              <div className="flex gap-2">
+                {/* ¡Corrección de TypeScript aplicada en el .map! */}
+                {q.opciones.map((opcion: string) => (
+                  <button
+                    key={opcion}
+                    onClick={() => seleccionarOpcion(q.id, opcion)}
+                    disabled={mostrarResultado}
+                    className={`mc-button flex-1 !py-2 !text-sm text-white ${
+                      respondido === opcion ? '!bg-[#3b82f6]' : '!bg-[#5a5a5a]'
+                    } ${
+                      mostrarResultado && opcion === q.correcta ? '!bg-[#528044]' : ''
+                    } ${
+                      mostrarResultado && respondido === opcion && !esCorrecta ? '!bg-red-600' : ''
+                    }`}
+                  >
+                    {opcion}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {mostrarResultado && gananciaActual > 0 && (
+        <div className="mt-8 mc-card !bg-yellow-600 border-yellow-400 text-center animate-bounce">
+          <p className="text-2xl font-black text-white drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+            ¡INVENTARIO GUARDADO! +{gananciaActual} GEMAS 💎
+          </p>
+        </div>
+      )}
+
+      <div className="mt-10 text-center">
+        {!mostrarResultado ? (
+          <button 
+            onClick={comprobar}
+            disabled={Object.keys(respuestas).length < preguntas.length}
+            className={`mc-button text-white w-full py-4 text-2xl font-black ${
+              Object.keys(respuestas).length < preguntas.length ? 'opacity-50 !bg-[#7a7a7a]' : '!bg-[#3b82f6]'
+            }`}
+          >
+            COMPROBAR INVENTARIO
+          </button>
+        ) : (
+          <button 
+            onClick={() => { setRespuestas({}); setMostrarResultado(false); setGananciaActual(0); }}
+            className="mc-button !bg-[#866043] text-white w-full py-4 text-2xl font-black"
+          >
+            NUEVA RONDA (REPETIR)
+          </button>
+        )}
+      </div>
+    </main>
   );
 }
