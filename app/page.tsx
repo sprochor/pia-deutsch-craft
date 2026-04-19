@@ -12,7 +12,17 @@ export default function Home() {
       nombre: 'Alemán', 
       descripcion: 'Bioma desbloqueado: Examen 17/04',
       bloque: 'bg-[#528044]', // Verde tipo pasto
+      btnColor: '!bg-[#528044] hover:!bg-[#639c52]',
       icono: '📖',
+      status: 'unlocked'
+    },
+    { 
+      id: 'ingles', 
+      nombre: 'Inglés', 
+      descripcion: 'Bioma desbloqueado: Examen 21/04',
+      bloque: 'bg-[#ef4444]', // Rojo tipo Redstone
+      btnColor: '!bg-[#ef4444] hover:!bg-[#dc2626]',
+      icono: '🧭',
       status: 'unlocked'
     },
     { 
@@ -20,6 +30,8 @@ export default function Home() {
       nombre: 'Matemática', 
       descripcion: 'Próximamente...', 
       bloque: 'bg-[#3b82f6]', // Azul tipo diamante
+      btnColor: '',
+      icono: '📐',
       status: 'locked'
     }
   ];
@@ -61,7 +73,7 @@ export default function Home() {
 
             {materia.status !== 'locked' ? (
               <Link href={`/materias/${materia.id}`}>
-                <button className="mc-button w-full text-white !bg-[#528044] hover:!bg-[#639c52]">
+                <button className={`mc-button w-full text-white ${materia.btnColor}`}>
                   VIAJAR AL BIOMA
                 </button>
               </Link>
